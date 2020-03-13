@@ -16,11 +16,42 @@
 {% import "_includes/forms" as forms %}
 
 {% do view.registerAssetBundle("marbles\\smokesignal\\assetbundles\\smokesignal\\SmokeSignalAsset") %}
+{{ forms.lightswitchField({
+  label: 'Activate Smoke Signal',
+  instructions: 'Turn this on to display a site-wide Smoke Signal',
+  
+}) }}
+
 
 {{ forms.textField({
-    label: 'Some Field',
-    instructions: 'Enter some setting here.',
-    id: 'someAttribute',
-    name: 'someAttribute',
-    value: settings['someAttribute']})
-}}
+  label: 'Message'|t('smoke-signal'),
+  instructions: 'Put your short message here'|t('smoke-signal'),
+  id: 'signalMessage',
+  name: 'signalMessage',
+
+}) }}
+
+{# INPUT: Link field #}
+{{ forms.textField({
+  label: 'Link'|t('smoke-signal'),
+  instructions: 'Where the signal message should link to'|t('smoke-signal'),
+  type: 'url',
+  id: 'signalLink',
+  name: 'signalLink',
+}) }}
+
+{# INPUT: Color field #}
+{{ forms.textField({
+  label: 'Color'|t('smoke-signal'),
+  instructions: 'Pick a color for the banner'|t('smoke-signal'),
+  id: 'signalColor',
+  name: 'signalColor'
+}) }}
+
+{# INPUT: Icon Field #}
+{{ forms.textField({
+  label: 'Icon'|t('smoke-signal'),
+  instructions: 'Pick an icon (optional)'|t('smoke-signal'),
+  id: 'signalIcon',
+  name: 'signalIcon'
+}) }}

@@ -39,7 +39,7 @@ class Settings extends Model
      *
      * @var string
      */
-    public $someAttribute = 'Some Default';
+    public $signalMessage = 'Momenteel gesloten';
 
     // Public Methods
     // =========================================================================
@@ -57,7 +57,7 @@ class Settings extends Model
     public function rules()
     {
         return [
-            ['someAttribute', 'string'],
+            ['signalMessage', 'string'],
             ['someAttribute', 'default', 'value' => 'Some Default'],
         ];
     }

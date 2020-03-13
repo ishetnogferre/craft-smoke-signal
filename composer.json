@@ -25,7 +25,8 @@
         }
     ],
     "require": {
-        "craftcms/cms": "^3.0.0-RC1"
+        "craftcms/cms": "^3.0.0-RC1",
+        "sebastianlenz/linkfield": "^1.0.20"
     },
     "autoload": {
         "psr-4": {
@@ -35,7 +36,7 @@
     "extra": {
         "name": "Smoke Signal",
         "handle": "smoke-signal",
-        "hasCpSettings": true,
+        "hasCpSettings": false,
         "hasCpSection": true,
         "changelogUrl": "???",
         "class": "marbles\\smokesignal\\SmokeSignal"
