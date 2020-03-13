@@ -1,0 +1,43 @@
+{
+    "name": "marbles/craft-smoke-signal",
+    "description": "Smoke Signal provides a quick way to inform your visitors.",
+    "type": "craft-plugin",
+    "version": "1.0.0",
+    "keywords": [
+        "craft",
+        "cms",
+        "craftcms",
+        "craft-plugin",
+        "smoke signal",
+        "warnings",
+        "messages",
+        "popup"
+    ],
+    "support": {
+        "docs": "???",
+        "issues": "???"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Marbles",
+            "homepage": "https://www.marbles.be/"
+        }
+    ],
+    "require": {
+        "craftcms/cms": "^3.0.0-RC1"
+    },
+    "autoload": {
+        "psr-4": {
+          "marbles\\smokesignal\\": "src/"
+        }
+    },
+    "extra": {
+        "name": "Smoke Signal",
+        "handle": "smoke-signal",
+        "hasCpSettings": true,
+        "hasCpSection": true,
+        "changelogUrl": "???",
+        "class": "marbles\\smokesignal\\SmokeSignal"
+    }
+}
