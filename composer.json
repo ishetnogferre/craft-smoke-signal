@@ -14,8 +14,8 @@
         "popup"
     ],
     "support": {
-        "docs": "???",
-        "issues": "???"
+        "docs": "https://raw.githubusercontent.com/Marbles/craft-smoke-signal/master/README.md",
+        "issues": "https://raw.githubusercontent.com/Marbles/craft-smoke-signal/issues"
     },
     "license": "MIT",
     "authors": [
@@ -38,7 +38,10 @@
         "handle": "smoke-signal",
         "hasCpSettings": false,
         "hasCpSection": true,
-        "changelogUrl": "???",
+        "changelogUrl": "https://raw.githubusercontent.com/Marbles/craft-smoke-signal/master/CHANGELOG.md",
+        "components": {
+            "signalsService": "marbles\\smokesignal\\services\\SignalsService"
+        },
         "class": "marbles\\smokesignal\\SmokeSignal"
     }
 }

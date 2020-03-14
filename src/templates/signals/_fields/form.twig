@@ -1,0 +1,76 @@
+{% import '_includes/forms' as forms %}
+
+{{ forms.textField({
+    label: 'Name'|t('smoke-signal'),
+    id: 'name',
+    name: 'name',
+    value: signal.name,
+    errors: signal.getErrors('name'),
+    first: true,
+    autofocus: true,
+    required: true,
+    instructions: 'Name of this form in the CP.'|t('smoke-signal')
+}) }}
+{% if not currentUser.admin %}
+    <div class="hidden">
+{% endif %}
+    {{ forms.textField({
+        label: 'Handle'|t('smoke-signal'),
+        id: 'handle',
+        name: 'handle',
+        value: signal.handle,
+        errors: signal.getErrors('handle'),
+        required: true,
+        instructions: 'Name of this form in the templates.'|t('smoke-signal')
+    }) }}
+{% if not currentUser.admin %}
+    </div>
+{% endif %}
+{{ forms.textareaField({
+    label: 'Message'|t('smoke-signal'),
+    id: 'description',
+    name: 'description',
+    value: signal.description,
+    errors: signal.getErrors('description'),
+    instructions: 'What the message of the signal should say.'|t('smoke-signal'),
+    placeholder: 'This is a textareaField'|t('smoke-signal')
+}) }}
+{{ forms.textField({
+    label: 'Link'|t('smoke-signal'),
+    id: 'link',
+    name: 'link',
+    value: signal.link,
+    errors: signal.getErrors('link'),
+    instructions: 'What the link in the signal should link to.'|t('smoke-signal'),
+    placeholder: 'http://example.com'|t('smoke-signal')
+}) }}
+{{ forms.textField({
+    label: 'Color'|t('smoke-signal'),
+    id: 'color',
+    name: 'color',
+    value: signal.color,
+    errors: signal.getErrors('color'),
+    instructions: 'Background color of the signal'|t('smoke-signal'),
+    placeholder: '#123456'|t('smoke-signal')
+}) }}
+{{ forms.textField({
+    label: 'Icon'|t('smoke-signal'),
+    id: 'icon',
+    name: 'icon',
+    value: signal.icon,
+    errors: signal.getErrors('icon'),
+    instructions: 'Define an icon for a cleaner look'|t('smoke-signal'),
+    placeholder: 'fa-smoke'|t('smoke-signal')
+}) }}
+{{ forms.textField({
+    label: 'Position'|t('smoke-signal'),
+    id: 'position',
+    name: 'position',
+    value: signal.position,
+    errors: signal.getErrors('position'),
+    instructions: 'How the signal will show on the page'|t('smoke-signal'),
+    placeholder: 'center-top'|t('smoke-signal')
+}) }}
+{% js %}
+{% if not signal.handle %}new Craft.HandleGenerator('#name', '#handle');{% endif %}
+{% endjs %}

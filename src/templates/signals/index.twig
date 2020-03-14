@@ -1,0 +1,7 @@
+{% extends "_layouts/elementindex" %}
+
+{% set title = 'Signals'|t('smoke-signal') %}
+
+{% block actionButton %}
+    <a class="btn submit add icon" href="{{ url('smoke-signal/signals/new') }}">{{ 'New signal'|t('smoke-signal') }}</a>
+{% endblock %}

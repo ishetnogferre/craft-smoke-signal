@@ -10,8 +10,8 @@
 
 namespace marbles\smokesignal;
 
+use marbles\smokesignal\services\SignalService;
 use marbles\smokesignal\variables\SmokeSignalVariable;
-use marbles\smokesignal\models\Settings;
 
 use Craft;
 use craft\base\Plugin;
@@ -20,62 +20,29 @@ use craft\events\PluginEvent;
 use craft\web\UrlManager;
 use craft\web\twig\variables\CraftVariable;
 use craft\events\RegisterUrlRulesEvent;
+use marbles\smokesignal\models\Settings;
 
 use yii\base\Event;
 
 /**
- * Craft plugins are very much like little applications in and of themselves. We’ve made
- * it as simple as we can, but the training wheels are off. A little prior knowledge is
- * going to be required to write a plugin.
+ * Class SmokeSignal
  *
- * For the purposes of the plugin docs, we’re going to assume that you know PHP and SQL,
- * as well as some semi-advanced concepts like object-oriented programming and PHP namespaces.
  *
- * https://craftcms.com/docs/plugins/introduction
+ * @package   marbles\smokesignal
  *
- * @author    Marbles
- * @package   SmokeSignal
- * @since     1.0.0
- *
+ * @property  SignalService $signalService
  * @property  Settings $settings
  * @method    Settings getSettings()
  */
 class SmokeSignal extends Plugin
 {
-    // Static Properties
-    // =========================================================================
-
     /**
-     * Static property that is an instance of this plugin class so that it can be accessed via
-     * SmokeSignal::$plugin
-     *
      * @var SmokeSignal
      */
     public static $plugin;
 
-    // Public Properties
-    // =========================================================================
-
     /**
-     * To execute your plugin’s migrations, you’ll need to increase its schema version.
-     *
-     * @var string
-     */
-    public $schemaVersion = '1.0.0';
-
-    // Public Methods
-    // =========================================================================
-
-    /**
-     * Set our $plugin static property to this class so that it can be accessed via
-     * SmokeSignal::$plugin
-     *
-     * Called after the plugin class is instantiated; do any one-time initialization
-     * here such as hooks and events.
-     *
-     * If you have a '/vendor/autoload.php' file, it will be loaded for you automatically;
-     * you do not need to load it in your init() method.
-     *
+     * {@inheritdoc}
      */
     public function init()
     {
@@ -87,16 +54,20 @@ class SmokeSignal extends Plugin
             UrlManager::class,
             UrlManager::EVENT_REGISTER_SITE_URL_RULES,
             function (RegisterUrlRulesEvent $event) {
-                $event->rules['siteActionTrigger1'] = 'smoke-signal/smoke-signal-controller';
+                $event->rules['siteActionTrigger1'] = 'smoke-signal/smoke-signal';
             }
         );
+
+        Craft::dd($this->signalsService);
 
         // Register our CP routes
         Event::on(
             UrlManager::class,
             UrlManager::EVENT_REGISTER_CP_URL_RULES,
             function (RegisterUrlRulesEvent $event) {
-                $event->rules['cpActionTrigger1'] = 'smoke-signal/smoke-signal-controller/do-something';
+                $event->rules['smoke-signal/signals'] = 'smoke-signal/signals/index';
+                $event->rules['smoke-signal/signals/new'] =  'smoke-signal/signals/edit-signal';
+                $event->rules['smoke-signal/signals/edit/<signalId:\d+>'] = 'smoke-signal/signals/edit-signal';
             }
         );
 
@@ -161,6 +132,30 @@ class SmokeSignal extends Plugin
     protected function createSettingsModel()
     {
         return new Settings();
+    }
+
+    public function getCpNavItem()
+    {
+        $navItem = parent::getCpNavItem();
+
+        $navItem['label'] = 'Smoke Signal';
+
+        $navItem['subnav'] = [
+            'general' => [
+                'label' => Craft::t('smoke-signal', 'General'),
+                'url' => 'smoke-signal'
+            ],
+            'connect' => [
+                'label' => Craft::t('smoke-signal', 'Signals'),
+                'url' => 'smoke-signal/signals'
+            ],
+            'settings' => [
+                'label' => Craft::t('smoke-signal', 'Settings'),
+                'url' => 'smoke-signal/settings'
+            ],
+        ];
+
+        return $navItem;
     }
 
     /**

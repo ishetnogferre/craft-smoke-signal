@@ -1,0 +1,49 @@
+{% extends '_layouts/cp' %}
+{% import '_includes/forms' as forms %}
+
+{% set fullPageForm = true %}
+{% set saveShortcutRedirect = 'smoke-signal/signals/edit/{id}' %}
+{% set title = (signalId is defined ? 'Edit signal'|t('simple-forms') : 'New signal'|t('smoke-signal')) %}
+
+{% set crumbs = [
+    { label: craft.smokeSignal.name, url: url('smoke-signal') },
+    { label: 'Signal'|t('smoke-signal'), url: url('smoke-signal/signals') },
+    { label: title, url: '#' }
+] %}
+
+{% set tabs = {
+    signal: {
+        label: "General"|t('smoke-signal'),
+        url: '#signal'
+    },
+} %}
+
+{% block saveButton %}
+    <div class="btngroup">
+        <input type="submit" class="btn submit" value="{{ 'Save'|t('smoke-signal') }}">
+
+        <div class="btn submit menubtn"></div>
+        <div class="menu">
+            <ul>
+                <li><a class="signalsubmit" data-redirect="smoke-signal/signals/edit/{id}">
+                    {{ 'Save and continue editing'|t('smoke-signal') }}
+                    {{ forms.optionShortcutLabel('S') }}
+                </a></li>
+                {% if signalId is defined %}
+                    <li><a class="signalsubmit" data-param="signalId" data-value="copy" data-redirect="smoke-signal/signals/edit/{id}">{{ 'Save as a new signal'|t('smoke-signal') }}</a></li>
+                    <li><a class="signalsubmit error" data-action="smoke-signal/signals/deleteSignal" data-confirm="{{ "Are you sure you want to delete this signal?"|t('smoke-signal') }}" data-redirect="smoke-signal/signals">{{ 'Delete'|t('smoke-signal') }}</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <input type="hidden" name="action" value="smoke-signal/signals/save-signal">
+    {{ redirectInput('smoke-signal/signals') }}
+    {% if signalId is defined -%}<input type="hidden" name="signalId" value="{{ signalId }}">{% endif %}
+
+    <div id="form">
+        {% include 'smoke-signal/signals/_fields/form' %}
+    </div>
+{% endblock %}

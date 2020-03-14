@@ -1,35 +1,10 @@
 <?php
-/**
- * Smoke Signal plugin for Craft CMS 3.x
- *
- * Smoke Signal provides a quick way to inform your visitors.
- *
- * @link      https://www.marbles.be/
- * @copyright Copyright (c) 2020 Marbles
- */
 
 namespace marbles\smokesignal\migrations;
 
-use marbles\smokesignal\SmokeSignal;
-
 use Craft;
-use craft\config\DbConfig;
 use craft\db\Migration;
 
-/**
- * Smoke Signal Install Migration
- *
- * If your plugin needs to create any custom database tables when it gets installed,
- * create a migrations/ folder within your plugin folder, and save an Install.php file
- * within it using the following template:
- *
- * If you need to perform any additional actions on install/uninstall, override the
- * safeUp() and safeDown() methods.
- *
- * @author    Marbles
- * @package   SmokeSignal
- * @since     1.0.0
- */
 class Install extends Migration
 {
     // Public Properties
@@ -50,18 +25,15 @@ class Install extends Migration
      * Child classes may implement this method instead of [[up()]] if the DB logic
      * needs to be within a transaction.
      *
-     * @return boolean return a false value to indicate the migration fails
-     * and should not proceed further. All other return values mean the migration succeeds.
+     * @return bool return a false value to indicate the migration fails
+     *              and should not proceed further. All other return values mean the migration succeeds.
      */
     public function safeUp()
     {
         $this->driver = Craft::$app->getConfig()->getDb()->driver;
         if ($this->createTables()) {
-            $this->createIndexes();
-            $this->addForeignKeys();
             // Refresh the db schema caches
             Craft::$app->db->schema->refresh();
-            $this->insertDefaultData();
         }
 
         return true;
@@ -74,8 +46,8 @@ class Install extends Migration
      * Child classes may implement this method instead of [[down()]] if the DB logic
      * needs to be within a transaction.
      *
-     * @return boolean return a false value to indicate the migration fails
-     * and should not proceed further. All other return values mean the migration succeeds.
+     * @return bool return a false value to indicate the migration fails
+     *              and should not proceed further. All other return values mean the migration succeeds.
      */
     public function safeDown()
     {
@@ -89,7 +61,7 @@ class Install extends Migration
     // =========================================================================
 
     /**
-     * Creates the tables needed for the Records used by the plugin
+     * Creates the tables needed for the Records used by the plugin.
      *
      * @return bool
      */
@@ -97,20 +69,25 @@ class Install extends Migration
     {
         $tablesCreated = false;
 
-    // smokesignal_smokesignalrecord table
-        $tableSchema = Craft::$app->db->schema->getTableSchema('{{%smokesignal_smokesignalrecord}}');
+        // simple-forms_forms table
+        $tableSchema = Craft::$app->db->schema->getTableSchema('{{%smokesignal_signals}}');
         if ($tableSchema === null) {
             $tablesCreated = true;
             $this->createTable(
-                '{{%smokesignal_smokesignalrecord}}',
+                '{{%smokesignal_signals}}',
                 [
-                    'id' => $this->primaryKey(),
-                    'dateCreated' => $this->dateTime()->notNull(),
-                    'dateUpdated' => $this->dateTime()->notNull(),
-                    'uid' => $this->uid(),
-                // Custom columns in the table
-                    'siteId' => $this->integer()->notNull(),
-                    'some_field' => $this->string(255)->notNull()->defaultValue(''),
+                    'id' => $this->integer()->notNull(),
+                    'name' => $this->string()->notNull(),
+                    'handle' => $this->string()->notNull(),
+                    'description' => $this->string()->notNull(),
+                    'icon' => $this->string()->notNull(),
+                    'color' => $this->string()->notNull(),
+                    'link' => $this->string()->notNull(),
+                    'position' => $this->string()->notNull(),
+                    'dateCreated' => $this->datetime()->notNull(),
+                    'dateUpdated' => $this->datetime()->notNull(),
+                    'uid'         => $this->uid(),
+                    'PRIMARY KEY(id)',
                 ]
             );
         }
@@ -119,49 +96,13 @@ class Install extends Migration
     }
 
     /**
-     * Creates the indexes needed for the Records used by the plugin
-     *
-     * @return void
-     */
-    protected function createIndexes()
-    {
-    // smokesignal_smokesignalrecord table
-        $this->createIndex(
-            $this->db->getIndexName(
-                '{{%smokesignal_smokesignalrecord}}',
-                'some_field',
-                true
-            ),
-            '{{%smokesignal_smokesignalrecord}}',
-            'some_field',
-            true
-        );
-        // Additional commands depending on the db driver
-        switch ($this->driver) {
-            case DbConfig::DRIVER_MYSQL:
-                break;
-            case DbConfig::DRIVER_PGSQL:
-                break;
-        }
-    }
-
-    /**
-     * Creates the foreign keys needed for the Records used by the plugin
+     * Creates the foreign keys needed for the Records used by the plugin.
      *
      * @return void
      */
     protected function addForeignKeys()
     {
-    // smokesignal_smokesignalrecord table
-        $this->addForeignKey(
-            $this->db->getForeignKeyName('{{%smokesignal_smokesignalrecord}}', 'siteId'),
-            '{{%smokesignal_smokesignalrecord}}',
-            'siteId',
-            '{{%sites}}',
-            'id',
-            'CASCADE',
-            'CASCADE'
-        );
+
     }
 
     /**
@@ -174,13 +115,13 @@ class Install extends Migration
     }
 
     /**
-     * Removes the tables needed for the Records used by the plugin
+     * Removes the tables needed for the Records used by the plugin.
      *
      * @return void
      */
     protected function removeTables()
     {
-    // smokesignal_smokesignalrecord table
-        $this->dropTableIfExists('{{%smokesignal_smokesignalrecord}}');
+        // contactform_submissions table
+        $this->dropTableIfExists('{{%smokesignal_signals}}');
     }
 }

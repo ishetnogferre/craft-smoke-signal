@@ -32,25 +32,13 @@ class SmokeSignalVariable
     // =========================================================================
 
     /**
-     * Whatever you want to output to a Twig template can go into a Variable method.
-     * You can have as many variable functions as you want.  From any Twig template,
-     * call it like this:
+     * Get the Plugin's name.
      *
-     *     {{ craft.smokeSignal.exampleVariable }}
-     *
-     * Or, if your variable requires parameters from Twig:
-     *
-     *     {{ craft.smokeSignal.exampleVariable(twigValue) }}
-     *
-     * @param null $optional
+     * @example {{ craft.smokeSignal.name }}
      * @return string
      */
-    public function exampleVariable($optional = null)
+    public function getName()
     {
-        $result = "And away we go to the Twig template...";
-        if ($optional) {
-            $result = "I'm feeling optional today...";
-        }
-        return $result;
+        return SmokeSignal::$plugin->name;
     }
 }

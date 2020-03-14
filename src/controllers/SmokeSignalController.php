@@ -35,7 +35,7 @@ use craft\web\Controller;
  * @package   SmokeSignal
  * @since     1.0.0
  */
-class SmokeSignalControllerController extends Controller
+class SmokeSignalController extends Controller
 {
 
     // Protected Properties
@@ -59,7 +59,7 @@ class SmokeSignalControllerController extends Controller
      */
     public function actionIndex()
     {
-        $result = 'Welcome to the SmokeSignalControllerController actionIndex() method';
+        $result = 'Welcome to the SmokeSignalController actionIndex() method';
 
         return $result;
     }
@@ -72,7 +72,7 @@ class SmokeSignalControllerController extends Controller
      */
     public function actionDoSomething()
     {
-        $result = 'Welcome to the SmokeSignalControllerController actionDoSomething() method';
+        $result = 'Welcome to the SmokeSignalController actionDoSomething() method';
 
         return $result;
     }
