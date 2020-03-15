@@ -48,6 +48,9 @@ class SignalQuery extends ElementQuery
                                smokesignal_signals.icon,
                                smokesignal_signals.color,
                                smokesignal_signals.link,
+                               smokesignal_signals.linkEntry,
+                               smokesignal_signals.linkText,
+                               smokesignal_signals.linkOpen,
                                smokesignal_signals.position,');
 
         if ($this->handle) {

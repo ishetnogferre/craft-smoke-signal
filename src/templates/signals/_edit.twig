@@ -1,6 +1,9 @@
 {% extends '_layouts/cp' %}
 {% import '_includes/forms' as forms %}
 
+{% do view.registerAssetBundle("marbles\\smokesignal\\assetbundles\\smokesignal\\SmokeSignalAsset") %}
+
+
 {% set fullPageForm = true %}
 {% set saveShortcutRedirect = 'smoke-signal/signals/edit/{id}' %}
 {% set title = (signalId is defined ? 'Edit signal'|t('simple-forms') : 'New signal'|t('smoke-signal')) %}

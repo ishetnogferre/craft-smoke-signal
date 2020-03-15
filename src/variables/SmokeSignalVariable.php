@@ -11,6 +11,7 @@
 namespace marbles\smokesignal\variables;
 
 use marbles\smokesignal\SmokeSignal;
+use marbles\smokesignal\elements\Signal;
 
 use Craft;
 
@@ -40,5 +41,14 @@ class SmokeSignalVariable
     public function getName()
     {
         return SmokeSignal::$plugin->name;
+    }
+
+    public function displaySignal(Signal $signal = null)
+    {
+        if (empty($signal)) {
+            $signal = Signal::find()->one();
+        }
+
+        return SmokeSignal::$plugin->signalsService->displaySignal($signal);
     }
 }

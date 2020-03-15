@@ -178,15 +178,24 @@ class SignalsService extends Component
         // Set namespace
         $namespace = 'signal_'.StringHelper::randomString(10);
         Craft::$app->getView()->setNamespace($namespace);
+        $oldPath = Craft::$app->getView()->getTemplatesPath();
+        Craft::$app->view->setTemplatesPath(SmokeSignal::$plugin->getBasePath() . '/templates/signals/_display/');
+
+        if (!empty($signal->linkEntry)) {
+            $entry = \craft\elements\Entry::find()->id($signal->linkEntry)->one();
+            $signal->link = $entry->url;
+        }
 
 
         // Build tab HTML
         $variables = [
             'signal'    => $signal
         ];
-        $html = Craft::$app->getView()->renderTemplate('signals/templates/signal', $variables);
+        $html = Craft::$app->getView()->renderTemplate('signal', $variables);
         // Reset namespace
         Craft::$app->getView()->setNamespace(null);
+
+        Craft::$app->getView()->setTemplatesPath($oldPath);
 
         // Parse form
         return new \Twig_Markup($html, Craft::$app->getView()->getTwig()->getCharset());

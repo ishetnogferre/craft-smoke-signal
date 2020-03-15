@@ -10,6 +10,9 @@ use craft\elements\Entry;
 use craft\helpers\UrlHelper;
 use marbles\smokesignal\elements\db\SignalQuery;
 use marbles\smokesignal\SmokeSignal;
+use craft\elements\actions\Edit;
+use craft\elements\actions\View;
+use craft\elements\actions\Delete;
 
 /**
  *
@@ -34,6 +37,12 @@ class Signal extends Element
     public $position;
     /** @var string */
     public $link;
+    /** @var string */
+    public $linkEntry;
+    /** @var string */
+    public $linkText;
+    /** @var int */
+    public $linkOpen;
 
 
     public function __construct(array $config = [])
@@ -107,11 +116,40 @@ class Signal extends Element
         ];
     }
 
+    /**
+     * @inheritdoc
+     */
+    protected static function defineActions(string $source = null): array
+    {
+        $elementsService = Craft::$app->getElements();
+
+        $actions[] = $elementsService->createAction([
+            'type' => Edit::class,
+            'label' => Craft::t('smoke-signal', 'Edit signal'),
+        ]);
+
+        $actions[] = $elementsService->createAction([
+            'type' => View::class,
+            'label' => Craft::t('smoke-signal', 'View signal'),
+        ]);
+
+        $actions[] = $elementsService->createAction([
+            'type' => Delete::class,
+            'confirmationMessage' => Craft::t('smoke-signal', 'Are you sure you want to delete the selected signals?'),
+            'successMessage' => Craft::t('smoke-signal', 'Signals deleted.'),
+        ]);
+
+
+        return $actions;
+    }
+
+
     protected static function defineTableAttributes(): array
     {
         return [
             'name' => Craft::t('smoke-signal', 'Name'),
             'handle' => Craft::t('smoke-signal', 'Handle'),
+            'description' => Craft::t('smoke-signal', 'Description'),
         ];
     }
 
@@ -129,7 +167,9 @@ class Signal extends Element
             case 'handle':
                 return '<code>' . $this->handle . '</code>';
                 break;
-
+            case 'description':
+                return '<code>' . $this->description . '</code>';
+                break;
             default:
                 return parent::getTableAttributeHtml($attribute);
                 break;
@@ -189,6 +229,9 @@ class Signal extends Element
             'icon' => $this->icon,
             'color' => $this->color,
             'link' => $this->link,
+            'linkEntry' => $this->linkEntry,
+            'linkText' => $this->linkText,
+            'linkOpen' => $this->linkOpen,
             'position' => $this->position,
         ];
 

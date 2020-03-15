@@ -1,0 +1,60 @@
+{% import '_includes/forms' as forms %}
+
+<div class="custom-link field">
+    <div class="heading">
+        <label>Link</label>
+        <div class="instructions">
+            <p>{{'What the link in the signal should link to.'|t('smoke-signal')}}</p>
+        </div>
+    </div>
+    <div class="flex">
+        {{ forms.selectField({
+            id: 'linkSelect',
+            options: {
+                "entry": 'Entry',
+                "url": 'Url',
+            },
+            value: signal.linkEntry ? 'entry' : 'url'
+        }) }}
+        <div id="entry" class="entry {{ signal.linkEntry ? '' : 'hidden' }}">
+            {{ forms.elementSelectField({
+                elementType: entryType,
+                id: 'linkEntry',
+                limit: 1,
+                name: 'linkEntry',
+                value: signal.linkEntry,
+                errors: signal.getErrors('link'),
+            }) }}
+        </div>
+        <div id="url" class="url {{ signal.linkEntry ? 'hidden' : '' }}">
+            {{ forms.textField({
+                id: 'linkUrl',
+                name: 'link',
+                value: signal.link,
+                errors: signal.getErrors('link'),
+                placeholder: 'http://example.com'|t('smoke-signal')
+            }) }}
+        </div>
+    </div>
+    <div class="flex">
+        {{ forms.textField({
+            label: 'Link Text'|t('smoke-signal'),
+            id: 'linkText',
+            name: 'linkText',
+            value: signal.linkText,
+            errors: signal.getErrors('linkText'),
+            required: true,
+            placeholder: 'More info'|t('smoke-signal')
+        }) }}
+
+        {{ forms.checkboxField({
+            label: 'Open in new tab?'|t('smoke-signal'),
+            id: 'linkOpen',
+            name: 'linkOpen',
+            value: 'open',
+            checked: signal.linkOpen,
+            errors: signal.getErrors('linkOpen'),
+            required: true,
+        }) }}
+    </div>
+</div>

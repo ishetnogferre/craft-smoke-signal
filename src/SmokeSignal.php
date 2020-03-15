@@ -30,7 +30,7 @@ use yii\base\Event;
  *
  * @package   marbles\smokesignal
  *
- * @property  SignalService $signalService
+ * @property  SignalService $signalsService
  * @property  Settings $settings
  * @method    Settings getSettings()
  */
@@ -58,13 +58,12 @@ class SmokeSignal extends Plugin
             }
         );
 
-        Craft::dd($this->signalsService);
-
         // Register our CP routes
         Event::on(
             UrlManager::class,
             UrlManager::EVENT_REGISTER_CP_URL_RULES,
             function (RegisterUrlRulesEvent $event) {
+                $event->rules['smoke-signal'] = 'smoke-signal/signals/index';
                 $event->rules['smoke-signal/signals'] = 'smoke-signal/signals/index';
                 $event->rules['smoke-signal/signals/new'] =  'smoke-signal/signals/edit-signal';
                 $event->rules['smoke-signal/signals/edit/<signalId:\d+>'] = 'smoke-signal/signals/edit-signal';
@@ -141,11 +140,7 @@ class SmokeSignal extends Plugin
         $navItem['label'] = 'Smoke Signal';
 
         $navItem['subnav'] = [
-            'general' => [
-                'label' => Craft::t('smoke-signal', 'General'),
-                'url' => 'smoke-signal'
-            ],
-            'connect' => [
+            'signals' => [
                 'label' => Craft::t('smoke-signal', 'Signals'),
                 'url' => 'smoke-signal/signals'
             ],

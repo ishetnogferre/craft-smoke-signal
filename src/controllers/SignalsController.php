@@ -14,6 +14,7 @@ use marbles\smokesignal\SmokeSignal;
 
 use Craft;
 use craft\web\Controller;
+use craft\elements\Entry;
 use marbles\smokesignal\elements\Signal;
 
 /**
@@ -61,14 +62,19 @@ class SignalsController extends Controller
     public function actionEditSignal(int $signalId = null, Signal $signal = null)
     {
         $variables = [
-            '$signalId' => $signalId,
+            'signalId' => $signalId,
+            'entryType' => Entry::class,
         ];
 
-        // Do we have a form model?
         if (! $signal) {
-            // Get form if available
             if ($signalId) {
+                $signal = SmokeSignal::$plugin->signalsService->getSignalById($signalId);
 
+                if (!$signal) {
+                    throw new Exception(Craft::t('smoke-signal', 'No signal exists with the ID “{id}”.', ['id' => $signalId]));
+                } else {
+                    $variables['signal'] = $signal;
+                }
             }
             else {
                 $variables['signal'] = new Signal();
@@ -91,19 +97,29 @@ class SignalsController extends Controller
         $request = Craft::$app->getRequest();
         $signal = new Signal();
 
-        Craft::dd(SmokeSignal::$plugin->signalsService);
-
         $signalId = $request->getBodyParam('signalId');
         if ($signalId && $signalId !== 'copy') {
-            $signal = SmokeSignal::$plugin->signalsService->getSignalById($formId);
+            $signal = SmokeSignal::$plugin->signalsService->getSignalById($signalId);
 
             if (! $signal) {
                 throw new Exception(Craft::t('smoke-signal', 'No signal exists with the ID “{id}”.', ['id' => $signalId]));
             }
         }
-        // Form attributes
-        $signal->name                     = $request->getBodyParam('name');
-        $signal->handle                   = $request->getBodyParam('handle');
+        $entryId = null;
+        if (!empty($request->getBodyParam('linkEntry'))) {
+            $entryId = (int)$request->getBodyParam('linkEntry')[0];
+        }
+
+        $signal->name = $request->getBodyParam('name');
+        $signal->handle = $request->getBodyParam('handle');
+        $signal->description = $request->getBodyParam('description');
+        $signal->icon = $request->getBodyParam('icon');
+        $signal->color = $request->getBodyParam('color');
+        $signal->link = $request->getBodyParam('link');
+        $signal->linkEntry = $entryId;
+        $signal->linkText = $request->getBodyParam('linkText');
+        $signal->linkOpen = !empty($request->getBodyParam('linkOpen')) ? 1 : 0;
+        $signal->position = $request->getBodyParam('position');
 
         // Duplicate form, so the name and handle are taken
         if ($signalId && $signalId === 'copy') {

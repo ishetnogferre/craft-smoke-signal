@@ -9,3 +9,14 @@
  * @package   SmokeSignal
  * @since     1.0.0
  */
+
+ document.getElementById('linkSelect').addEventListener('change', function () {
+     console.log(this.value);
+     var item = document.getElementById(this.value);
+     var old = document.getElementById(this.value == 'entry' ? 'url' : 'entry' );
+
+     item.classList.remove('hidden');
+     item.getElementsByTagName('input')[0].removeAttribute('disabled');
+     old.classList.add('hidden');
+     old.getElementsByTagName('input')[0].setAttribute('disabled', true);;
+ });

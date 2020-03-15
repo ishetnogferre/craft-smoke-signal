@@ -31,45 +31,32 @@
     id: 'description',
     name: 'description',
     value: signal.description,
+    required: true,
     errors: signal.getErrors('description'),
     instructions: 'What the message of the signal should say.'|t('smoke-signal'),
     placeholder: 'This is a textareaField'|t('smoke-signal')
 }) }}
-{{ forms.textField({
-    label: 'Link'|t('smoke-signal'),
-    id: 'link',
-    name: 'link',
-    value: signal.link,
-    errors: signal.getErrors('link'),
-    instructions: 'What the link in the signal should link to.'|t('smoke-signal'),
-    placeholder: 'http://example.com'|t('smoke-signal')
-}) }}
-{{ forms.textField({
+{% include 'smoke-signal/signals/_fields/link' %}
+{{ forms.colorField({
     label: 'Color'|t('smoke-signal'),
     id: 'color',
     name: 'color',
-    value: signal.color,
+    value: signal.color ?? '#ecbd7d',
     errors: signal.getErrors('color'),
     instructions: 'Background color of the signal'|t('smoke-signal'),
-    placeholder: '#123456'|t('smoke-signal')
 }) }}
-{{ forms.textField({
-    label: 'Icon'|t('smoke-signal'),
-    id: 'icon',
-    name: 'icon',
-    value: signal.icon,
-    errors: signal.getErrors('icon'),
-    instructions: 'Define an icon for a cleaner look'|t('smoke-signal'),
-    placeholder: 'fa-smoke'|t('smoke-signal')
-}) }}
-{{ forms.textField({
+<input type="hidden" name="icon" value="fa-warning">
+{{ forms.radioGroupField({
     label: 'Position'|t('smoke-signal'),
     id: 'position',
     name: 'position',
     value: signal.position,
+    options: {
+        "center-top": "<div class='position'><div class='full top'><span></span></div></div>",
+        "center-center": "<div class='position'><div class='full center'><span></span></div></div>"
+    },
     errors: signal.getErrors('position'),
     instructions: 'How the signal will show on the page'|t('smoke-signal'),
-    placeholder: 'center-top'|t('smoke-signal')
 }) }}
 {% js %}
 {% if not signal.handle %}new Craft.HandleGenerator('#name', '#handle');{% endif %}
