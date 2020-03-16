@@ -51,4 +51,21 @@ class SmokeSignalVariable
 
         return SmokeSignal::$plugin->signalsService->displaySignal($signal);
     }
+
+    public function getColor($color) {
+        $hex = str_replace("#", "", $color);
+        $r = hexdec($hex[0] . $hex[1]);
+        $g = hexdec($hex[2] . $hex[3]);
+        $b = hexdec($hex[4] . $hex[5]);
+
+        if($this->lightness($r, $g, $b) >= .8) {
+            return 'color-dark';
+        } else {
+            return 'color-light';
+        }
+    }
+
+    protected function lightness($R = 255, $G = 255, $B = 255) {
+        return (max($R, $G, $B) + min($R, $G, $B)) / 510.0; // HSL algorithm
+    }
 }

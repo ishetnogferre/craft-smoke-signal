@@ -20,3 +20,11 @@
      old.classList.add('hidden');
      old.getElementsByTagName('input')[0].setAttribute('disabled', true);;
  });
+
+
+(function () {
+    document.getElementById('close-btn').addEventListener('click', function (e) {
+        document.getElementsByClassName('signal')[0].remove();
+        e.preventDefault();
+    });
+})();

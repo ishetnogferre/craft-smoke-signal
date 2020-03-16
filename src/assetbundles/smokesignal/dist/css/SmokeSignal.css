@@ -123,6 +123,26 @@
     margin: 0 auto;
 }
 
+.close {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+#close-btn {
+    font-size: 30px;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.color-light {
+    color: #FFFFFF;
+}
+
+.color-dark {
+    color: #000000;
+}
+
 @media(min-width: 760px) {
     .signal.center-top .signal-block .container {
         display: flex;

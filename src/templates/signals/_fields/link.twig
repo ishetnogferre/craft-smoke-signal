@@ -1,5 +1,7 @@
 {% import '_includes/forms' as forms %}
 
+{% set element = craft.entries.id(signal.linkEntry).one() %}
+
 <div class="custom-link field">
     <div class="heading">
         <label>Link</label>
@@ -22,7 +24,7 @@
                 id: 'linkEntry',
                 limit: 1,
                 name: 'linkEntry',
-                value: signal.linkEntry,
+                elements: [element],
                 errors: signal.getErrors('link'),
             }) }}
         </div>

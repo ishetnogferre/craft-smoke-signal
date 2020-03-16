@@ -1,7 +1,10 @@
 {% do view.registerAssetBundle("marbles\\smokesignal\\assetbundles\\smokesignal\\SmokeSignalAsset") %}
 
-<div class="signal {{ signal.position }}">
+<div class="signal {{ signal.position }} {{ craft.smokeSignal.getColor(signal.color) }}">
     <div class="signal-block" style="background-color: {{ signal.color }}">
+        <div class="container close">
+            <a href="#" id="close-btn" class="{{ craft.smokeSignal.getColor(signal.color) }}">×</a>
+        </div>
         <div class="container">
             <p>{{ signal.description }}</p>
             <a class="btn" href="{{ signal.link }}" target="{{ signal.linkOpen ? '_blank' : '_self' }}">{{ signal.linkText }}</a>
